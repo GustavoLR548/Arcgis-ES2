@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title>Bookmarks widget | Sample | ArcGIS API for JavaScript 4.19</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css" />
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <script src="https://js.arcgis.com/4.19/"></script>
+    <script>
+      require([
+        "esri/WebMap",
+        "esri/views/MapView",
+        "esri/widgets/Bookmarks",
+        "esri/widgets/Expand"
+      ], function(
+        WebMap, MapView, Bookmarks, Expand
+      ) {
+        const webmap = new WebMap({
+          portalItem: {
+            // autocasts as new PortalItem()
+            id: "f76d4e22e8864b878216fd2f8b3e87b3"
+          }
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: webmap
+        });
+
+        const bookmarks = new Bookmarks({
+          view: view,
+          // allows bookmarks to be added, edited, or deleted
+          editingEnabled: true
+        });
+
+        const bkExpand = new Expand({
+          view: view,
+          content: bookmarks,
+          expanded: true
+        })
+
+        // Add the widget to the top-right corner of the view
+        view.ui.add(bkExpand, "top-right");
+
+        // bonus - how many bookmarks in the webmap?
+        webmap.when(function() {
+          if (webmap.bookmarks && webmap.bookmarks.length) {
+            console.log("Bookmarks: ", webmap.bookmarks.length);
+          } else {
+            console.log("No bookmarks in this webmap.");
+          }
+        });
+      });
+	  
+	  // Exemplo dos parques nos EUA
+	  // https://developers.arcgis.com/javascript/latest/sample-code/widgets-bookmarks/
+	  
+    </script>
+  </head>
+  <body>
+  <h1>  5. Alterar para centralizar em Belo Horizonte e usar um mapa seu do arcGIS para os Bookmarks - colocar nome </h1>
+    <div id="viewDiv"></div>
+  </body>
+</html>

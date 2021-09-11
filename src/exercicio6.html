@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title>Legend widget | Sample | ArcGIS API for JavaScript 4.19</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css" />
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+      }
+    </style>
+
+    <script src="https://js.arcgis.com/4.19/"></script>
+    <script>
+      require(["esri/views/MapView", "esri/widgets/Legend", "esri/WebMap"], function(MapView, Legend, WebMap) {
+        var webmap = new WebMap({
+          portalItem: {
+            // autocasts as new PortalItem()
+            id: "f76d4e22e8864b878216fd2f8b3e87b3"
+          }
+        });
+
+        var view = new MapView({
+          container: "viewDiv",
+          map: webmap
+        });
+
+        view.when(function() {
+          // get the first layer in the collection of operational layers in the WebMap
+          // when the resources in the MapView have loaded.
+          var featureLayer = webmap.layers.getItemAt(0);
+
+          var legend = new Legend({
+            view: view,
+            layerInfos: [
+              {
+                layer: featureLayer,
+                title: "LEGENDA"
+              }
+            ]
+          });
+
+          // Add widget to the bottom right corner of the view
+          view.ui.add(legend, "top-right");
+        });
+      });
+    </script>
+  </head>
+
+  <body class="calcite">
+  <h1>  6. Alterar para abrir o seu mapa do arcGISONLINE e suas legendas - colocar nome </h1>
+    <div id="viewDiv"></div>
+  </body>
+</html>
