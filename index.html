@@ -1,11 +1,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>Mapa 2D</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title> Atividade 3</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css" />
     <style>
       html,
       body,
@@ -16,43 +14,79 @@
         width: 100%;
       }
     </style>
-
-    <link
-      rel="stylesheet"
-      href="https://js.arcgis.com/4.19/esri/themes/light/main.css"
-    />
     <script src="https://js.arcgis.com/4.19/"></script>
-
     <script>
-      require(["esri/Map", "esri/views/MapView"], (Map, MapView) => {
-        const map = new Map({
-          basemap: "osm"
+      require([
+        "esri/WebMap",
+        "esri/views/MapView",
+        "esri/widgets/Bookmarks",
+        "esri/widgets/Expand",
+        "esri/widgets/Editor",
+        "esri/widgets/Print"
+      ], function(
+        WebMap, MapView, Bookmarks, Expand, Editor, Print
+      ) {
+        const webmap = new WebMap({
+          portalItem: {
+            // autocasts as new PortalItem()
+            id: "65fb879135ed4b4a9bb30ce132167a5a"
+          }
         });
-		
-/*Outros basemaps:
-   "national-geographic"
-   "hybrid"
-   "terrain"
-   "satellite"
-   "osm"
-   "gray"
-   ...
-   veja mais em: https://developers.arcgis.com/javascript/3/jsapi/esri.basemaps-amd.html
-*/
 
         const view = new MapView({
           container: "viewDiv",
-          map: map,
-          zoom: 9,
-          center: [139.99257354541803, 35.92354808336378] // longitude, latitude
+          map: webmap
+        });
+
+        const bookmarks = new Bookmarks({
+          view: view,
+          // allows bookmarks to be added, edited, or deleted
+          editingEnabled: true
+        });
+
+        const bkExpand = new Expand({
+          view: view,
+          content: bookmarks,
+          expanded: true
+        })
+
+        const editor = new Editor({
+          view: view
+        });
+
+        const print = new Print({
+          view: view,
+          // specify your own print service
+          printServiceUrl:
+             "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+        });
+        
+        view.ui.add(editor, "top-right");
+
+        view.ui.add(print, {
+          position: "top-left"
+        });
+
+        // Add the widget to the top-right corner of the view
+        view.ui.add(bkExpand, "top-right");
+
+        // bonus - how many bookmarks in the webmap?
+        webmap.when(function() {
+          if (webmap.bookmarks && webmap.bookmarks.length) {
+            console.log("Bookmarks: ", webmap.bookmarks.length);
+          } else {
+            console.log("No bookmarks in this webmap.");
+          }
         });
       });
+	  
+	  // Exemplo dos parques nos EUA
+	  // https://developers.arcgis.com/javascript/latest/sample-code/widgets-bookmarks/
+	  
     </script>
   </head>
-
   <body>
-    <h3>Atividade Engenharia de Software 2</h3>
+  <h1>  Aplicação Web ArcGis  </h1>
     <div id="viewDiv"></div>
   </body>
 </html>
-
