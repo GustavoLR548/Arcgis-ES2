@@ -10,7 +10,7 @@
       #viewDiv {
         padding: 0;
         margin: 0;
-        height: 100%;
+        height: 97%;
         width: 100%;
       }
     </style>
@@ -22,9 +22,11 @@
         "esri/widgets/Bookmarks",
         "esri/widgets/Expand",
         "esri/widgets/Editor",
-        "esri/widgets/Print"
+        "esri/widgets/Print",
+        "esri/widgets/Compass",
+        "esri/widgets/Search"
       ], function(
-        WebMap, MapView, Bookmarks, Expand, Editor, Print
+        WebMap, MapView, Bookmarks, Expand, Editor, Print, Compass, Search
       ) {
         const webmap = new WebMap({
           portalItem: {
@@ -54,6 +56,10 @@
           view: view
         });
 
+        let compass = new Compass({
+          view: view,
+        });
+
         const print = new Print({
           view: view,
           // specify your own print service
@@ -61,14 +67,25 @@
              "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
         });
         
+        const searchWidget = new Search({
+          view: view
+        });
+
         view.ui.add(editor, "top-right");
 
         view.ui.add(print, {
           position: "top-left"
         });
 
+        view.ui.add(compass, "bottom-right");
+
         // Add the widget to the top-right corner of the view
         view.ui.add(bkExpand, "top-right");
+
+        view.ui.add(searchWidget, {
+          position: "bottom-left",
+          index: 2
+        });
 
         // bonus - how many bookmarks in the webmap?
         webmap.when(function() {
